@@ -28,6 +28,7 @@ libraryDependencies ++= {
     "com.typesafe.slick" %% "slick" % "3.0.2",
     "org.slf4j" % "slf4j-nop" % "1.6.4",
     "com.zaxxer" % "HikariCP" % "2.3.9",
-    "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+    "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+    "io.netty" % "netty-all" % "4.0.31.Final"
   )
 }
