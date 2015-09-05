@@ -1,25 +1,21 @@
 package gcm
 
-import java.util.concurrent.TimeUnit
-
-import scala.concurrent.Future
-
-import akka.util.Timeout
 import akka.actor.{ ActorRef, ActorSystem }
-
 import spray.client.pipelining._
 import spray.http._
-import spray.http.Uri
-import spray.can.Http
 import spray.httpx.SprayJsonSupport
 import spray.httpx.TransformerAux._
 import spray.json._
-import DefaultJsonProtocol._
+
+import scala.concurrent.Future
 
 case class GCMConfig(
   apiKey: String,
+  senderId: String,
+  listener: ActorRef,
   system: Option[ActorSystem] = None,
-  listener: ActorRef
+  host: String,
+  port: Int
 )
 
 case class Message[T](
@@ -35,8 +31,10 @@ object MessageJsonProtocol extends DefaultJsonProtocol {
 class GCM(
     config: GCMConfig
 ) extends SprayJsonSupport with AdditionalFormats {
-  implicit val system = config.system.getOrElse(ActorSystem.apply)
+  implicit val system = config.system.getOrElse(ActorSystem())
   import system.dispatcher
+
+  val xmpp = new XMPP(config)
 
   val sendUri = "https://gcm-http.googlapis.com/gcm/send"
 
@@ -44,7 +42,7 @@ class GCM(
     addHeader("Authorization", s"key=${config.apiKey}") ~>
       sendReceive
 
-  def isApiKeyValid(): Future[Boolean] = {
+  def isApiKeyValid: Future[Boolean] = {
     val content = """{"registration_ids": ["ABC"]}""".parseJson.asJsObject
     val req = pipeline(Post(sendUri, content))
     for (res <- req) yield res.status != StatusCodes.Unauthorized
@@ -62,3 +60,4 @@ class GCM(
     pipeline(Post(sendUri, content))
   }
 }
+

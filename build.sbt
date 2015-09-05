@@ -29,6 +29,12 @@ libraryDependencies ++= {
     "org.slf4j" % "slf4j-nop" % "1.6.4",
     "com.zaxxer" % "HikariCP" % "2.3.9",
     "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
-    "io.netty" % "netty-all" % "4.0.31.Final"
+    "io.netty" % "netty-all" % "4.1.0.Beta6",
+    "org.igniterealtime.smack" % "smack-core" % "4.1.3",
+    "org.igniterealtime.smack" % "smack-extensions" % "4.1.3",
+    "org.igniterealtime.smack" % "smack-tcp" % "4.1.3",
+    "org.igniterealtime.smack" % "smack-java7" % "4.1.3",
+    "org.igniterealtime.smack" % "smack-im" % "4.1.3",
+    "org.igniterealtime.smack" % "smack-debug" % "4.1.3"
   )
 }

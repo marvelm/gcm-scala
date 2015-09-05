@@ -23,3 +23,6 @@ project/plugins/project/
 # Ensime
 .ensime
 .ensime_cache
+
+# Hide main
+src/main/scala/gcm/Main.scala
