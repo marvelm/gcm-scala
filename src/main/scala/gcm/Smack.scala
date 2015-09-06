@@ -2,14 +2,16 @@ package gcm
 
 import javax.net.ssl.SSLSocketFactory
 
-import gcm.GCMConfig
 import org.jivesoftware.smack._
-import org.jivesoftware.smack.debugger.{ ConsoleDebugger, JulDebugger, ReflectionDebuggerFactory }
 import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfiguration }
+import spray.httpx.SprayJsonSupport
+import spray.json.{ AdditionalFormats, JsObject, JsonFormat }
 
-class Smack(config: GCMConfig) {
+import scala.xml.Node
+
+class Smack(config: GCMConfig) extends SprayJsonSupport with AdditionalFormats {
   SmackConfiguration.DEBUG = true
   val smackConf = XMPPTCPConnectionConfiguration.builder()
     .setDebuggerEnabled(true)
@@ -42,7 +44,6 @@ class Smack(config: GCMConfig) {
   conn.addAsyncStanzaListener(new StanzaListener {
     override def processPacket(packet: Stanza): Unit = {
       config.listener ! packet
-      println(packet)
     }
   }, new StanzaFilter {
     override def accept(stanza: Stanza): Boolean = {
@@ -52,5 +53,21 @@ class Smack(config: GCMConfig) {
 
   //SmackConfiguration.getDebuggerFactory.create(conn, null, null)
   conn.connect()
-}
 
+  implicit class ScalaStanza(node: Node) extends Stanza {
+    override val toXML = node.toString()
+  }
+
+  private def parseMessage[T: JsonFormat](msg: Message[T]): JsObject = {
+    import MessageJsonProtocol._
+    msg.toJson.asJsObject
+  }
+
+  def sendMessage[T: JsonFormat](msg: Message[T]): Unit = {
+    conn.sendStanza(
+      <gcm xmlns="google:mobile:data">
+        { parseMessage(msg).compactPrint }
+      </gcm>
+    )
+  }
+}
