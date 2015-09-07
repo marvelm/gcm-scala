@@ -9,7 +9,7 @@ import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfigur
 
 import scala.xml.Node
 
-class Smack(config: GCMConfig) {
+class SmackGcm(config: GcmConfig) {
   SmackConfiguration.DEBUG = true
   val smackConf = XMPPTCPConnectionConfiguration.builder()
     .setDebuggerEnabled(true)

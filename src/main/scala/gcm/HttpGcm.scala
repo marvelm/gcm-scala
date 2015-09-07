@@ -10,7 +10,7 @@ import spray.httpx.TransformerAux._
 import scala.concurrent.Future
 
 class HttpGcm(
-    config: GCMConfig
+    config: GcmConfig
 ) {
   implicit val system = config.system.getOrElse(ActorSystem())
 

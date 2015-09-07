@@ -6,7 +6,7 @@ import org.json4s._
 import org.json4s.JsonDSL._
 import org.json4s.jackson.JsonMethods._
 
-case class GCMConfig(
+case class GcmConfig(
   apiKey: String,
   senderId: String,
   listener: ActorRef,
