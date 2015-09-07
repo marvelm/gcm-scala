@@ -8,10 +8,21 @@ for the bidirectional flow of notifications. If you need to just send push notif
 
 ### An example of `GcmHttp`
 ```scala
+import gcm.http.{Messages, HttpGcm}
 val config = GcmConfig(
   "ApiKey",
   "SenderId"
 )
-val gcmClient = gcm.GcmHttp(config)
-gcmClient.send(gcm.SendToSync("registration id"))
+val client = HttpGcm(config)
+
+// A simple message with no data
+client.sendMessage(Messages.sendToSync(to = "APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx..."))
+
+// Notification
+client.sendMessage(Messages.notification(
+  to = "APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx...",
+  notification = Notification(
+  title = "New messages",
+  body = Some("You have 9001 new messages"),
+)))
 ```
