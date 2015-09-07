@@ -12,7 +12,7 @@ object Priority {
 
 case class Message(
     to: String,
-    registrationIds: List[String],
+    registrationIds: Option[List[String]] = None,
     collapseKey: Option[String] = None,
     priority: Option[String] = None,
     contentAvailable: Option[Boolean] = None,
@@ -33,4 +33,17 @@ case class Message(
       ("restricted_package_name" -> restrictedPackageName) ~
       ("data" -> data.map(_.ast)) ~
       ("notification" -> notification.map(_.ast))
+}
+
+object Messages {
+  def sendToSync(to: String) = Message(to)
+
+  def notification(to: String, notification: Notification) = Message(to, notification = Some(notification))
+
+  def data(
+    to: String,
+    data: ToJson,
+    timeToLive: Option[Int] = None,
+    delayWhileIdle: Option[Boolean] = None
+  ) = Message(to, data = Some(data), timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
 }

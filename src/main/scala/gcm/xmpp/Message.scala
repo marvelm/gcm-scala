@@ -23,6 +23,7 @@ import org.json4s.JsonDSL._
 case class Message(
     to: String,
     messageId: String = UUID.randomUUID.toString,
+    registrationIds: Option[List[String]] = None,
     collapseKey: Option[String] = None,
     priority: Option[String] = None,
     contentAvailable: Option[Boolean] = None,
@@ -50,10 +51,11 @@ object Messages {
 
   def notification(to: String, notification: Notification) = Message(to, notification = Some(notification))
 
-  def dataMessage(
+  def data(
     to: String,
     data: ToJson,
+    registrationIds: Option[List[String]] = None,
     timeToLive: Option[Int] = None,
     delayWhileIdle: Option[Boolean] = None
-  ) = Message(to, data = Some(data), timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
+  ) = Message(to, data = Some(data), registrationIds = registrationIds, timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
 }
