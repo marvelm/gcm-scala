@@ -6,12 +6,10 @@ import org.jivesoftware.smack._
 import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfiguration }
-import spray.httpx.SprayJsonSupport
-import spray.json.{ AdditionalFormats, JsObject, JsonFormat }
 
 import scala.xml.Node
 
-class Smack(config: GCMConfig) extends SprayJsonSupport with AdditionalFormats {
+class Smack(config: GCMConfig) {
   SmackConfiguration.DEBUG = true
   val smackConf = XMPPTCPConnectionConfiguration.builder()
     .setDebuggerEnabled(true)
