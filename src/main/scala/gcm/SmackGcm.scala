@@ -10,7 +10,6 @@ import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfigur
 import scala.xml.Node
 
 class SmackGcm(config: GcmConfig) {
-  SmackConfiguration.DEBUG = true
   val smackConf = XMPPTCPConnectionConfiguration.builder()
     .setDebuggerEnabled(true)
     .setHost("gcm-preprod.googleapis.com")
@@ -49,8 +48,7 @@ class SmackGcm(config: GcmConfig) {
     }
   })
 
-  //SmackConfiguration.getDebuggerFactory.create(conn, null, null)
-  conn.connect()
+  def connect = conn.connect
 
   implicit class ScalaStanza(node: Node) extends Stanza {
     override val toXML = node.toString()
