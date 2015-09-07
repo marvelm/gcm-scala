@@ -58,15 +58,10 @@ class Smack(config: GCMConfig) extends SprayJsonSupport with AdditionalFormats {
     override val toXML = node.toString()
   }
 
-  private def parseMessage[T: JsonFormat](msg: Message[T]): JsObject = {
-    import MessageJsonProtocol._
-    msg.toJson.asJsObject
-  }
-
-  def sendMessage[T: JsonFormat](msg: Message[T]): Unit = {
+  def sendMessage(msg: Message): Unit = {
     conn.sendStanza(
       <gcm xmlns="google:mobile:data">
-        { parseMessage(msg).compactPrint }
+        { msg.toJsonString }
       </gcm>
     )
   }

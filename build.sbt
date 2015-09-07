@@ -27,6 +27,7 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-actor" % "2.3.9",
     "com.typesafe.slick" %% "slick" % "3.0.2",
     "org.slf4j" % "slf4j-nop" % "1.6.4",
+    "org.json4s" %% "json4s-jackson" % "3.2.11",
     //"com.zaxxer" % "HikariCP" % "2.3.9",
     //"org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
     "io.netty" % "netty-all" % "4.1.0.Beta6",
