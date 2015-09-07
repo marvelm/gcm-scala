@@ -7,7 +7,7 @@ import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfiguration }
 
-import scala.xml.Node
+import scala.xml.{ Elem, Node }
 
 class SmackGcm(config: GcmConfig) {
   val smackConf = XMPPTCPConnectionConfiguration.builder()
@@ -38,6 +38,7 @@ class SmackGcm(config: GcmConfig) {
 
     override def reconnectingIn(seconds: Int): Unit = println(seconds)
   })
+
   conn.addAsyncStanzaListener(new StanzaListener {
     override def processPacket(packet: Stanza): Unit = {
       config.listener ! packet
@@ -50,8 +51,8 @@ class SmackGcm(config: GcmConfig) {
 
   def connect = conn.connect
 
-  implicit class ScalaStanza(node: Node) extends Stanza {
-    override val toXML = node.toString()
+  implicit class ScalaStanza(elem: Elem) extends Stanza {
+    override val toXML = elem.toString()
   }
 
   def sendMessage(msg: Message) {
@@ -62,7 +63,7 @@ class SmackGcm(config: GcmConfig) {
     )
   }
 
-  def sendRawStanza(node: Node) {
-    conn.sendStanza(node)
+  def sendRawStanza(elem: Elem) {
+    conn.sendStanza(elem)
   }
 }
