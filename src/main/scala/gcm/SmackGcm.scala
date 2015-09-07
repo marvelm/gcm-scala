@@ -2,6 +2,7 @@ package gcm
 
 import javax.net.ssl.SSLSocketFactory
 
+import akka.actor.{ ActorPath, ActorRef }
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza
@@ -18,44 +19,46 @@ class SmackGcm(config: GcmConfig) {
     .setUsernameAndPassword(config.senderId, config.apiKey)
     .setServiceName("gcm.googleapis.com")
     .build()
+
   val conn = new XMPPTCPConnection(smackConf)
 
-  val listener = config.listener
-
   conn.addConnectionListener(new ConnectionListener {
+    val listener = config.listener
+
     override def connected(connection: XMPPConnection): Unit = {
       conn.login()
-      listener ! ("Connected", connection)
+      listener.foreach(_ ! ("Connected", connection))
     }
 
-    override def reconnectionFailed(e: Exception): Unit ={
-      listener ! ("ReconnectionFailed", e)
+    override def reconnectionFailed(e: Exception): Unit = {
+      listener.foreach(_ ! ("ReconnectionFailed", e))
     }
 
-    override def reconnectionSuccessful(): Unit ={
-      listener ! "ReconnectionSuccessful"
+    override def reconnectionSuccessful(): Unit = {
+      listener.foreach(_ ! "ReconnectionSuccessful")
     }
 
     override def authenticated(connection: XMPPConnection, resumed: Boolean): Unit = {
-      listener ! ("Authenticated", connection, resumed)
+      listener.foreach(_ ! ("Authenticated", connection, resumed))
     }
 
     override def connectionClosedOnError(e: Exception): Unit = {
-      listener ! ("ConnectionClosedOnError", e)
+      listener.foreach(_ ! ("ConnectionClosedOnError", e))
     }
 
     override def connectionClosed(): Unit = {
-      listener ! "ConnectionClosed"
+      listener.foreach(_ ! "ConnectionClosed")
     }
 
     override def reconnectingIn(seconds: Int): Unit = {
-      listener ! ("ReconnectingIn", seconds)
+      listener.foreach(_ ! ("ReconnectingIn", seconds))
     }
   })
 
   conn.addAsyncStanzaListener(new StanzaListener {
     override def processPacket(packet: Stanza): Unit = {
-      config.listener ! packet
+      packet.toString
+      config.listener.foreach(_ ! packet)
     }
   }, new StanzaFilter {
     override def accept(stanza: Stanza): Boolean = {

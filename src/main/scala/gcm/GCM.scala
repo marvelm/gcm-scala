@@ -9,16 +9,18 @@ import org.json4s.jackson.JsonMethods._
 case class GcmConfig(
   apiKey: String,
   senderId: String,
-  listener: ActorRef,
+  listener: Option[ActorRef] = None,
   system: Option[ActorSystem] = None,
-  host: String,
-  port: Int
+  testing: Boolean = false
 )
 
 abstract class Message {
   private implicit val formats = DefaultFormats
+
   def ast: JsonAST.JObject
+
   def toJson = render(ast)
+
   def toJsonString = compact(render(toJson))
 }
 
