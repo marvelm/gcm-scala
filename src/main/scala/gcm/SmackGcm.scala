@@ -54,11 +54,15 @@ class SmackGcm(config: GcmConfig) {
     override val toXML = node.toString()
   }
 
-  def sendMessage(msg: Message): Unit = {
+  def sendMessage(msg: Message) {
     conn.sendStanza(
       <gcm xmlns="google:mobile:data">
         { msg.toJsonString }
       </gcm>
     )
+  }
+
+  def sendRawStanza(node: Node) {
+    conn.sendStanza(node)
   }
 }
