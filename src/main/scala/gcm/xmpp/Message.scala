@@ -21,17 +21,17 @@ import org.json4s.JsonDSL._
  * @param notification
  */
 case class Message(
-                    to: String,
-                    messageId: String = UUID.randomUUID.toString,
-                    collapseKey: Option[String] = None,
-                    priority: Option[String] = None,
-                    contentAvailable: Option[Boolean] = None,
-                    delayWhileIdle: Option[Boolean] = None,
-                    timeToLive: Option[Int] = None,
-                    restrictedPackageName: Option[String] = None,
-                    data: Option[ToJson] = None,
-                    notification: Option[Notification] = None
-                    ) extends ToJson {
+    to: String,
+    messageId: String = UUID.randomUUID.toString,
+    collapseKey: Option[String] = None,
+    priority: Option[String] = None,
+    contentAvailable: Option[Boolean] = None,
+    delayWhileIdle: Option[Boolean] = None,
+    timeToLive: Option[Int] = None,
+    restrictedPackageName: Option[String] = None,
+    data: Option[ToJson] = None,
+    notification: Option[Notification] = None
+) extends ToJson {
   override def ast: JsonAST.JObject =
     ("to" -> to) ~
       ("message_id" -> messageId) ~
@@ -45,7 +45,15 @@ case class Message(
       ("notification" -> notification.map(_.ast))
 }
 
-object Message {
+object Messages {
   def sendToSync(to: String) = Message(to)
-  def notification(to: String, notification: Notification) = Message(to, notification=Some(notification))
+
+  def notification(to: String, notification: Notification) = Message(to, notification = Some(notification))
+
+  def dataMessage(
+    to: String,
+    data: ToJson,
+    timeToLive: Option[Int] = None,
+    delayWhileIdle: Option[Boolean] = None
+  ) = Message(to, data = Some(data), timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
 }
