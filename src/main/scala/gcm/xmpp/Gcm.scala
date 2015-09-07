@@ -1,9 +1,8 @@
-package gcm
+package gcm.xmpp
 
-import akka.actor.{ ActorSystem, ActorRef }
-
-import org.json4s._
+import akka.actor.{ ActorRef, ActorSystem }
 import org.json4s.JsonDSL._
+import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
 case class GcmConfig(
@@ -24,11 +23,11 @@ abstract class Message {
   def toJsonString = compact(render(toJson))
 }
 
-class SendToSync(to: String) extends Message {
+case class SendToSync(to: String) extends Message {
   override val ast: JsonAST.JObject = "to" -> to
 }
 
-class Notification(
+case class Notification(
     to: String,
     title: String,
     text: String,
@@ -43,7 +42,7 @@ class Notification(
         ("time_to_live" -> timeToLive)
 }
 
-class Data(
+case class Data(
     to: String,
     messageId: String,
     data: JValue,

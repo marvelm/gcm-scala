@@ -1,14 +1,13 @@
-package gcm
+package gcm.xmpp
 
 import javax.net.ssl.SSLSocketFactory
 
-import akka.actor.{ ActorPath, ActorRef }
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfiguration }
 
-import scala.xml.{ Elem, Node }
+import scala.xml.Elem
 
 class SmackGcm(config: GcmConfig) {
   val smackConf = XMPPTCPConnectionConfiguration.builder()
@@ -57,13 +56,10 @@ class SmackGcm(config: GcmConfig) {
 
   conn.addAsyncStanzaListener(new StanzaListener {
     override def processPacket(packet: Stanza): Unit = {
-      packet.toString
       config.listener.foreach(_ ! packet)
     }
   }, new StanzaFilter {
-    override def accept(stanza: Stanza): Boolean = {
-      true
-    }
+    override def accept(stanza: Stanza): Boolean = true
   })
 
   def connect = conn.connect
