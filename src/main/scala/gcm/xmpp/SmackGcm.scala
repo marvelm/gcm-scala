@@ -2,6 +2,7 @@ package gcm.xmpp
 
 import javax.net.ssl.SSLSocketFactory
 
+import gcm.GcmConfig
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.filter.StanzaFilter
 import org.jivesoftware.smack.packet.Stanza

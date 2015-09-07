@@ -1,8 +1,8 @@
 package gcm.http
 
 import akka.actor.ActorSystem
-import gcm.Message
-import gcm.xmpp.{ Message, GcmConfig }
+import gcm.{ GcmConfig, Message }
+import gcm.xmpp.Message
 import spray.client.pipelining._
 import spray.http.ContentTypes._
 import spray.http.HttpMethods._
