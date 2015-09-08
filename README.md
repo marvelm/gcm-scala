@@ -26,4 +26,12 @@ client.sendMessage(Messages.notification(
     body = Some("You have 9001 new messages"),
   )
 ))
+
+// A message containing arbitrary data
+import org.json4s.jackson.JsonMethods._
+val data = parse("""{"someData": 1, "someMoreData": 2}""")
+client.sendMessage(Messages.data(
+  to = "APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx...",
+  data = data
+))
 ```
