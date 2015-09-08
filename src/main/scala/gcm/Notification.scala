@@ -7,7 +7,7 @@ import org.json4s.JsonDSL._
 case class Notification(
     title: String,
     body: Option[String] = None,
-    icon: String,
+    icon: String = "myicon",
     sound: Option[String] = None,
     badge: Option[String] = None,
     tag: Option[String] = None,

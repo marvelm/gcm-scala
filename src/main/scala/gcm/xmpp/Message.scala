@@ -4,7 +4,7 @@ import java.util.UUID
 
 import gcm.util.ToJson
 import gcm.Notification
-import org.json4s.JsonAST
+import org.json4s.{ JValue, JObject, JsonAST }
 import org.json4s.JsonDSL._
 
 /**
@@ -30,7 +30,7 @@ case class Message(
     delayWhileIdle: Option[Boolean] = None,
     timeToLive: Option[Int] = None,
     restrictedPackageName: Option[String] = None,
-    data: Option[ToJson] = None,
+    data: Option[JValue] = None,
     notification: Option[Notification] = None
 ) extends ToJson {
   override def ast: JsonAST.JObject =
@@ -42,7 +42,7 @@ case class Message(
       ("delay_while_idle" -> delayWhileIdle) ~
       ("time_to_live" -> timeToLive) ~
       ("restricted_package_name" -> restrictedPackageName) ~
-      ("data" -> data.map(_.ast)) ~
+      ("data" -> data) ~
       ("notification" -> notification.map(_.ast))
 }
 
@@ -53,7 +53,7 @@ object Messages {
 
   def data(
     to: String,
-    data: ToJson,
+    data: JObject,
     registrationIds: Option[List[String]] = None,
     timeToLive: Option[Int] = None,
     delayWhileIdle: Option[Boolean] = None
