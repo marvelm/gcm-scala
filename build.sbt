@@ -14,8 +14,6 @@ resolvers ++= Seq(
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
-scalariformSettings
-
 libraryDependencies ++= {
   val sprayVersion = "1.3.3"
   Seq(
