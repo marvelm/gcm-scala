@@ -22,7 +22,8 @@ client.sendMessage(Messages.sendToSync(to = "APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYq
 client.sendMessage(Messages.notification(
   to = "APA91bHun4MxP5egoKMwt2KZFBaFUH-1RYqx...",
   notification = Notification(
-  title = "New messages",
-  body = Some("You have 9001 new messages"),
-)))
+    title = "New messages",
+    body = Some("You have 9001 new messages"),
+  )
+))
 ```
