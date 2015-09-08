@@ -1,5 +1,7 @@
 # gcm-scala
 
+[![Build Status](https://travis-ci.org/marvelm/gcm-scala.svg?branch=master)](https://travis-ci.org/marvelm/gcm-scala)
+
 ## A Scala client library for Google Cloud Messaging
 
 `gcm-scala` provides two ways to interact with GCM: `GcmSmack` and `GcmHttp`.
