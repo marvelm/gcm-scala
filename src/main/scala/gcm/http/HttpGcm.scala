@@ -36,8 +36,7 @@ class HttpGcm(
     for (res <- req) yield res.status != StatusCodes.Unauthorized
   }
 
-  def sendMessage(msg: Message): Future[HttpResponse] = {
+  def sendMessage(msg: Message): Future[HttpResponse] =
     pipeline(jsonRequest(msg.toJsonString))
-  }
 }
 
