@@ -32,4 +32,3 @@ case class Notification(
       ("title_loc_key" -> titleLocKey) ~
       ("title_loc_args" -> titleLocArgs)
 }
-

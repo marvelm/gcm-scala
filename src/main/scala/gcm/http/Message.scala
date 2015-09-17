@@ -11,17 +11,18 @@ object Priority {
 }
 
 case class Message(
-    to: String,
-    registrationIds: Option[List[String]] = None,
-    collapseKey: Option[String] = None,
-    priority: Option[String] = None,
-    contentAvailable: Option[Boolean] = None,
-    delayWhileIdle: Option[Boolean] = None,
-    timeToLive: Option[Int] = None,
-    restrictedPackageName: Option[String] = None,
-    data: Option[JValue] = None,
-    notification: Option[Notification] = None
-) extends ToJson {
+  to: String,
+  registrationIds: Option[List[String]] = None,
+  collapseKey: Option[String] = None,
+  priority: Option[String] = None,
+  contentAvailable: Option[Boolean] = None,
+  delayWhileIdle: Option[Boolean] = None,
+  timeToLive: Option[Int] = None,
+  restrictedPackageName: Option[String] = None,
+  data: Option[JValue] = None,
+  notification: Option[Notification] = None
+)
+    extends ToJson {
   override def ast: JsonAST.JObject =
     ("to" -> to) ~
       ("registration_ids" -> registrationIds) ~
@@ -45,5 +46,6 @@ object Messages {
     data: JValue,
     timeToLive: Option[Int] = None,
     delayWhileIdle: Option[Boolean] = None
-  ) = Message(to, data = Some(data), timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
+  ) =
+    Message(to, data = Some(data), timeToLive = timeToLive, delayWhileIdle = delayWhileIdle)
 }

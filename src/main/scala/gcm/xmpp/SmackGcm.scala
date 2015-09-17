@@ -27,31 +27,31 @@ class SmackGcm(config: GcmConfig) {
 
     override def connected(connection: XMPPConnection): Unit = {
       conn.login()
-      listener.foreach(_ ! ("Connected", connection))
+      listener.foreach(_ ! Connected())
     }
 
     override def reconnectionFailed(e: Exception): Unit = {
-      listener.foreach(_ ! ("ReconnectionFailed", e))
+      listener.foreach(_ ! ReconnectionFailed(e))
     }
 
     override def reconnectionSuccessful(): Unit = {
-      listener.foreach(_ ! "ReconnectionSuccessful")
+      listener.foreach(_ ! ReconnectionSuccessful())
     }
 
     override def authenticated(connection: XMPPConnection, resumed: Boolean): Unit = {
-      listener.foreach(_ ! ("Authenticated", connection, resumed))
+      listener.foreach(_ ! Authenticated(connection, resumed))
     }
 
     override def connectionClosedOnError(e: Exception): Unit = {
-      listener.foreach(_ ! ("ConnectionClosedOnError", e))
+      listener.foreach(_ ! ConnectionClosed(Some(e)))
     }
 
     override def connectionClosed(): Unit = {
-      listener.foreach(_ ! "ConnectionClosed")
+      listener.foreach(_ ! ConnectionClosed())
     }
 
     override def reconnectingIn(seconds: Int): Unit = {
-      listener.foreach(_ ! ("ReconnectingIn", seconds))
+      listener.foreach(_ ! ReconnectingIn(seconds))
     }
   })
 
