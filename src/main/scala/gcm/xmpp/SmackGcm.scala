@@ -4,12 +4,11 @@ import javax.net.ssl.SSLSocketFactory
 
 import gcm.GcmConfig
 import org.jivesoftware.smack._
-import org.jivesoftware.smack.chat.{ChatMessageListener, Chat, ChatManagerListener, ChatManager}
-import org.jivesoftware.smack.filter.StanzaFilter
+import org.jivesoftware.smack.chat.{ Chat, ChatManager, ChatManagerListener, ChatMessageListener }
 import org.jivesoftware.smack.packet.Stanza
 import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfiguration }
 
-import scala.xml.{XML, Elem}
+import scala.xml.{ Elem, XML }
 
 class SmackGcm(config: GcmConfig) {
   val smackConf = {
@@ -71,7 +70,7 @@ class SmackGcm(config: GcmConfig) {
         chat.addMessageListener(new ChatMessageListener {
           val user = conn.getUser
           override def processMessage(chat: Chat, message: packet.Message): Unit = {
-            if (message.getFrom != user )
+            if (message.getFrom != user)
               config.listener.foreach(_ ! XML.loadString(message.toString))
           }
         })
