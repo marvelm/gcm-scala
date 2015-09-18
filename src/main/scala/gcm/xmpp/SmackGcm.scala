@@ -2,6 +2,7 @@ package gcm.xmpp
 
 import javax.net.ssl.SSLSocketFactory
 
+import akka.actor.{Props, ActorSystem}
 import gcm.GcmConfig
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.chat.{ Chat, ChatManager, ChatManagerListener, ChatMessageListener }
@@ -28,38 +29,40 @@ class SmackGcm(config: GcmConfig) {
       .build()
   }
 
+  implicit val system = config.system getOrElse ActorSystem()
+
   val conn = new XMPPTCPConnection(smackConf)
 
   conn.addConnectionListener(new ConnectionListener {
-    val listener = config.listener
+    val listener = config.listener getOrElse system.actorOf(Props.empty)
 
     override def connected(connection: XMPPConnection): Unit = {
       conn.login()
-      listener.foreach(_ ! Connected())
+      listener ! Connected()
     }
 
     override def reconnectionFailed(e: Exception): Unit = {
-      listener.foreach(_ ! ReconnectionFailed(e))
+      listener ! ReconnectionFailed(e)
     }
 
     override def reconnectionSuccessful(): Unit = {
-      listener.foreach(_ ! ReconnectionSuccessful())
+      listener ! ReconnectionSuccessful()
     }
 
     override def authenticated(connection: XMPPConnection, resumed: Boolean): Unit = {
-      listener.foreach(_ ! Authenticated(connection, resumed))
+      listener ! Authenticated(connection, resumed)
     }
 
     override def connectionClosedOnError(e: Exception): Unit = {
-      listener.foreach(_ ! ConnectionClosed(Some(e)))
+      listener ! ConnectionClosed(Some(e))
     }
 
     override def connectionClosed(): Unit = {
-      listener.foreach(_ ! ConnectionClosed())
+      listener ! ConnectionClosed()
     }
 
     override def reconnectingIn(seconds: Int): Unit = {
-      listener.foreach(_ ! ReconnectingIn(seconds))
+      listener ! ReconnectingIn(seconds)
     }
   })
 

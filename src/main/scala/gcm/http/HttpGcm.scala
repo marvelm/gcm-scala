@@ -13,7 +13,7 @@ import scala.concurrent.Future
 class HttpGcm(
     config: GcmConfig
 ) {
-  implicit val system = config.system.getOrElse(ActorSystem())
+  implicit val system = config.system getOrElse ActorSystem()
 
   import system.dispatcher
 
