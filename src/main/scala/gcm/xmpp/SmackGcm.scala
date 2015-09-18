@@ -29,40 +29,40 @@ class SmackGcm(config: GcmConfig) {
       .build()
   }
 
-  implicit val system = config.system getOrElse ActorSystem()
+  implicit val system = config.system getOrElse ActorSystem(s"SmackGcm ${config.senderId}")
 
   val conn = new XMPPTCPConnection(smackConf)
 
+  // Create empty actor if listener is None
   val listener = config.listener getOrElse system.actorOf(Props.empty)
 
   conn.addConnectionListener(new ConnectionListener {
-
-    override def connected(connection: XMPPConnection): Unit = {
+    override def connected(connection: XMPPConnection) {
       conn.login()
       listener ! Connected()
     }
 
-    override def reconnectionFailed(e: Exception): Unit = {
+    override def reconnectionFailed(e: Exception) {
       listener ! ReconnectionFailed(e)
     }
 
-    override def reconnectionSuccessful(): Unit = {
+    override def reconnectionSuccessful() {
       listener ! ReconnectionSuccessful()
     }
 
-    override def authenticated(connection: XMPPConnection, resumed: Boolean): Unit = {
+    override def authenticated(connection: XMPPConnection, resumed: Boolean) {
       listener ! Authenticated(connection, resumed)
     }
 
-    override def connectionClosedOnError(e: Exception): Unit = {
+    override def connectionClosedOnError(e: Exception) {
       listener ! ConnectionClosed(Some(e))
     }
 
-    override def connectionClosed(): Unit = {
+    override def connectionClosed() {
       listener ! ConnectionClosed()
     }
 
-    override def reconnectingIn(seconds: Int): Unit = {
+    override def reconnectingIn(seconds: Int) {
       listener ! ReconnectingIn(seconds)
     }
   })
@@ -88,15 +88,12 @@ class SmackGcm(config: GcmConfig) {
     override val toXML = elem.toString()
   }
 
-  def sendMessage(msg: Message) {
+  def sendMessage(msg: Message) =
     conn.sendStanza(
       <gcm xmlns="google:mobile:data">
         { msg.toJsonString }
       </gcm>
     )
-  }
 
-  def sendRawStanza(elem: Elem) {
-    conn.sendStanza(elem)
-  }
+  def sendRawStanza(elem: Elem) = conn.sendStanza(elem)
 }
