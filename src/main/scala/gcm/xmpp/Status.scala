@@ -4,11 +4,11 @@ import org.jivesoftware.smack.XMPPConnection
 
 abstract class Status
 
-case class Connected() extends Status
+case object Connected extends Status
 
 case class ReconnectionFailed(exception: Exception) extends Status
 
-case class ReconnectionSuccessful() extends Status
+case object ReconnectionSuccessful extends Status
 
 case class Authenticated(connection: XMPPConnection, resumed: Boolean) extends Status
 

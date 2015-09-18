@@ -39,7 +39,7 @@ class SmackGcm(config: GcmConfig) {
   conn.addConnectionListener(new ConnectionListener {
     override def connected(connection: XMPPConnection) {
       conn.login()
-      listener ! Connected()
+      listener ! Connected
     }
 
     override def reconnectionFailed(e: Exception) {
@@ -47,7 +47,7 @@ class SmackGcm(config: GcmConfig) {
     }
 
     override def reconnectionSuccessful() {
-      listener ! ReconnectionSuccessful()
+      listener ! ReconnectionSuccessful
     }
 
     override def authenticated(connection: XMPPConnection, resumed: Boolean) {
@@ -59,7 +59,7 @@ class SmackGcm(config: GcmConfig) {
     }
 
     override def connectionClosed() {
-      listener ! ConnectionClosed()
+      listener ! ConnectionClosed
     }
 
     override def reconnectingIn(seconds: Int) {
