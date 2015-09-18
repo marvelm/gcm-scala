@@ -18,7 +18,7 @@ case class Notification(
     titleLocKey: Option[String] = None,
     titleLocArgs: Option[String] = None
 ) extends ToJson {
-  override def ast: JsonAST.JObject =
+  override val ast: JsonAST.JObject =
     ("title" -> title) ~
       ("body" -> body) ~
       ("icon" -> icon) ~

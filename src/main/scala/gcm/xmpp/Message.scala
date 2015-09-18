@@ -33,7 +33,7 @@ case class Message(
     data: Option[JValue] = None,
     notification: Option[Notification] = None
 ) extends ToJson {
-  override def ast: JsonAST.JObject =
+  override val ast: JsonAST.JObject =
     ("to" -> to) ~
       ("message_id" -> messageId) ~
       ("collapse_key" -> collapseKey) ~
