@@ -13,7 +13,7 @@ for the bidirectional flow of notifications. If you need to just send push notif
 import gcm.http.{Messages, HttpGcm}
 val config = GcmConfig(
   "ApiKey",
-  "SenderId"
+  "SenderId" // AKA project number
 )
 val client = HttpGcm(config)
 
