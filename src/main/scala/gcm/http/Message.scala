@@ -1,9 +1,9 @@
 package gcm.http
 
-import gcm.util.ToJson
 import gcm.Notification
-import org.json4s._
+import gcm.util.ToJson
 import org.json4s.JsonDSL._
+import org.json4s._
 
 object Priority {
   val High = "high"

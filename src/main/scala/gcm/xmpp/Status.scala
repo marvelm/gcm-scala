@@ -12,6 +12,6 @@ case class ReconnectionSuccessful() extends Status
 
 case class Authenticated(connection: XMPPConnection, resumed: Boolean) extends Status
 
-case class ConnectionClosed (exception: Option[Exception] = None) extends Status
+case class ConnectionClosed(exception: Option[Exception] = None) extends Status
 
 case class ReconnectingIn(seconds: Int) extends Status

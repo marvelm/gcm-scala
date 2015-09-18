@@ -2,10 +2,10 @@ package gcm.xmpp
 
 import java.util.UUID
 
-import gcm.util.ToJson
 import gcm.Notification
-import org.json4s.{ JValue, JObject, JsonAST }
+import gcm.util.ToJson
 import org.json4s.JsonDSL._
+import org.json4s.{ JObject, JValue, JsonAST }
 
 /**
  * Downstream message

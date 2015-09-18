@@ -1,7 +1,7 @@
 package gcm.util
 
-import org.json4s.{ JsonAST, DefaultFormats }
 import org.json4s.jackson.JsonMethods._
+import org.json4s.{ DefaultFormats, JsonAST }
 
 abstract class ToJson {
   implicit val formats = DefaultFormats
