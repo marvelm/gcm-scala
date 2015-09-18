@@ -2,7 +2,7 @@ package gcm.xmpp
 
 import javax.net.ssl.SSLSocketFactory
 
-import akka.actor.{Props, ActorSystem}
+import akka.actor.{ Props, ActorSystem }
 import gcm.GcmConfig
 import org.jivesoftware.smack._
 import org.jivesoftware.smack.chat.{ Chat, ChatManager, ChatManagerListener, ChatMessageListener }
@@ -33,8 +33,9 @@ class SmackGcm(config: GcmConfig) {
 
   val conn = new XMPPTCPConnection(smackConf)
 
+  val listener = config.listener getOrElse system.actorOf(Props.empty)
+
   conn.addConnectionListener(new ConnectionListener {
-    val listener = config.listener getOrElse system.actorOf(Props.empty)
 
     override def connected(connection: XMPPConnection): Unit = {
       conn.login()
@@ -74,7 +75,7 @@ class SmackGcm(config: GcmConfig) {
           val user = conn.getUser
           override def processMessage(chat: Chat, message: packet.Message): Unit = {
             if (message.getFrom != user)
-              config.listener.foreach(_ ! XML.loadString(message.toString))
+              listener ! XML.loadString(message.toString)
           }
         })
       }
