@@ -11,14 +11,22 @@ import org.jivesoftware.smack.tcp.{ XMPPTCPConnection, XMPPTCPConnectionConfigur
 import scala.xml.Elem
 
 class SmackGcm(config: GcmConfig) {
-  val smackConf = XMPPTCPConnectionConfiguration.builder()
-    .setDebuggerEnabled(true)
-    .setHost("gcm-preprod.googleapis.com")
-    .setPort(5236)
-    .setSocketFactory(SSLSocketFactory.getDefault)
-    .setUsernameAndPassword(config.senderId, config.apiKey)
-    .setServiceName("gcm.googleapis.com")
-    .build()
+  val smackConf = {
+    val host =
+      if (config.testing)
+        "gcm-preprod.googleapis.com"
+      else
+        "gcm.googleapis.com"
+
+    XMPPTCPConnectionConfiguration.builder()
+      .setDebuggerEnabled(true)
+      .setHost(host)
+      .setServiceName(host)
+      .setPort(5236)
+      .setSocketFactory(SSLSocketFactory.getDefault)
+      .setUsernameAndPassword(config.senderId, config.apiKey)
+      .build()
+  }
 
   val conn = new XMPPTCPConnection(smackConf)
 
