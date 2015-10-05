@@ -4,11 +4,11 @@
 
 ## A Scala client library for Google Cloud Messaging
 
-`gcm-scala` provides two ways to interact with GCM: `GcmSmack` and `GcmHttp`.
-The primary difference between the two is that the `GcmSmack` class communicates with GCM via XMPP which allows
-for the bidirectional flow of notifications. If you need to just send push notifications from the server to mobile clients, you should use `GcmHttp`.
+`gcm-scala` provides two ways to interact with GCM: `SmackGcm` and `HttpGcm`.
+The primary difference between the two is that the `SmackGcm` class communicates with GCM via XMPP which allows
+for the bidirectional flow of notifications. If you need to just send push notifications from the server to mobile clients, you should use `HttpGcm`.
 
-### An example of `GcmHttp`
+### An example of `HttpGcm`
 ```scala
 import gcm.http.{Messages, HttpGcm}
 val config = GcmConfig(
