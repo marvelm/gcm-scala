@@ -7,9 +7,11 @@
 `gcm-scala` provides two ways to interact with GCM: `SmackGcm` and `HttpGcm`.
 The primary difference between the two is that the `SmackGcm` class communicates with GCM via XMPP which allows
 for the bidirectional flow of notifications.
-If you need to just send push notifications from the server to mobile clients, you should use `HttpGcm`.
+If you need to occasionally send a one-off push notification, you should use `HttpGcm`.
 
-Don't create too many instances of `SmackGcm`. The underlying library "Smack" creates a few threads for
+If you're constantly sending push notifications, `SmackGcm` might have better performance because
+it doesn't repeatedly open and close sockets like `HttpGcm`.
+Don't create too many instances of `SmackGcm`. The underlying library, "Smack", creates a few threads for
 each connection to an XMPP server. I'm working on a possible solution for this in the "netty" branch.
 Additionally, Google imposes a 1000 connection limit per sender id.
 
