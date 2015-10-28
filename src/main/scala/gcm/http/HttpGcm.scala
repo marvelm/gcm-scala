@@ -31,6 +31,8 @@ class HttpGcm(
     )
 
   def isApiKeyValid: Future[Boolean] = {
+    // `registration_ids` is arbitrary. GCM won't bother checking them
+    // if the `apiKey` is invalid
     val content = """{"registration_ids": ["ABC"]}"""
     val req = pipeline(jsonRequest(content))
     for (res <- req) yield res.status != StatusCodes.Unauthorized
